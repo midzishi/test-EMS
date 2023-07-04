@@ -253,9 +253,11 @@ __attribute__((constructor(CONST_PRIO))) void __afl_auto_init(void)
 
   if ((map_size_ptr = getenv("AFL_LLVM_DOCUMENT_IDS")) != NULL)
   {
-    FILE *fpRead = fopen(map_size_ptr, "r");
-    fscanf(fpRead, "%u", &afl_map_size);
-    fclose(fpRead);
+    FILE *fpRead;
+    if ((fpRead = fopen(map_size_ptr, "r")) != NULL) {
+       fscanf(fpRead, "%u", &afl_map_size);
+       fclose(fpRead);
+    }
   }
   else
   {
